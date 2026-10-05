@@ -1,0 +1,54 @@
+LA BRUJA TOCACOJONES — versión provisional
+
+Abre index.html para probar la experiencia. Está diseñada primero para móvil,
+pero en ordenador se muestra dentro de un marco de tamaño móvil.
+
+RECORRIDO
+1. Entrar con «Sonia Lara García» en el campo del nombre (acepta mayúsculas,
+   minúsculas y «Garcia» sin tilde). El campo contraseña acepta cualquier texto.
+2. Bruja + audio 1 → Pista 1 (hay que acertar) → Tarea 1 → Ubicación 1.
+3. Tras «Regalo encontrado», repetir el ciclo hasta la pista 5.
+4. Tras el quinto regalo, bruja + audio 6 → felicitación final.
+5. «Volver al inicio» reinicia todo.
+
+Mantener pulsado el perfil «sonia» durante 5 segundos abre un menú oculto
+para saltar al inicio de cualquiera de las cinco pistas. Un toque normal no hace nada.
+
+ARCHIVOS DE AUDIO
+Pon tus clips en assets/audio/ con estos nombres:
+  audio 1.mp3  ...  audio 6.mp3
+También se aceptan «audio-1.mp3» ... «audio-6.mp3» y extensiones .m4a, .wav u .ogg.
+Si falta un audio, se muestra la bruja unos segundos y se avanza automáticamente.
+Si el navegador móvil bloquea la reproducción automática, aparecerá el botón
+«Escuchar mensaje». Cuando un audio existe, se espera a que termine realmente.
+
+CAMBIAR EL CONTENIDO
+En js/app.js, al principio del archivo, está la lista PISTAS con los cinco
+acertijos, respuestas, tareas, ubicaciones y rutas de imagen o vídeo. Las respuestas
+aceptan mayúsculas/minúsculas, tildes opcionales, signos, espacios sobrantes y
+artículos como «el» o «una». Algunas pistas aceptan alternativas habituales.
+Los poemas y respuestas proceden de Pistas.txt. La primera tarea muestra
+assets/video/Squat_Time.mp4, pide cinco sentadillas y sitúa el regalo en el
+chaise longue del sofá. La segunda pide comprar churros y sitúa el regalo en
+«La Zona de Vinilos». La tercera pide recrear la foto con Suka y sitúa el
+regalo arriba de la máquina de Aerotermia. Las ubicaciones de los regalos 4 y 5
+ya están definidas; sus tareas e imágenes siguen provisionales.
+Puedes reemplazar las ilustraciones provisionales de assets/images/ manteniendo
+sus nombres, o cambiar las rutas correspondientes en el HTML y en js/app.js.
+La foto del perfil facilitada está en assets/images/ProfilePhoto.jpg.
+
+FOTO DE LA TERCERA TAREA
+En móvil se solicita la cámara frontal. Si la vista en directo no funciona,
+«Hacer foto» abre la cámara nativa del teléfono. Después de tomar la foto,
+«Enviar» descarga el archivo en el dispositivo y muestra la ubicación.
+No se sube la imagen a ningún servidor. En ordenador se usa una foto de prueba
+para poder ensayar el recorrido. Para usar la cámara en móvil, abre la web
+publicada con HTTPS (Netlify lo proporciona); no basta con abrir index.html
+como archivo local.
+
+PUBLICACIÓN
+Arrastra la carpeta BTC_Web completa a https://app.netlify.com/drop/ .
+index.html debe seguir en la raíz. No se necesita Node.js ni servidor backend.
+La fuente decorativa se carga de Google Fonts; si no hay conexión, se usan
+fuentes alternativas del dispositivo. El nombre actúa como clave del juego,
+no como autenticación segura: el código de una web estática es visible.

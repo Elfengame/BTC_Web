@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#190b2d">
+  <meta name="description" content="Una aventura de acertijos, regalos y una bruja con demasiadas ganas de fastidiar.">
+  <title>La bruja tocacojones</title>
+  <link rel="icon" href="assets/images/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="js/app.js" defer></script>
+</head>
+<body>
+  <div class="app-shell" id="app-shell">
+    <div class="ambient ambient-one" aria-hidden="true"></div>
+    <div class="ambient ambient-two" aria-hidden="true"></div>
+    <div class="particles" id="particles" aria-hidden="true"></div>
+
+    <header class="topbar">
+      <div class="brand" aria-label="La bruja tocacojones"><span class="brand-star">✦</span> LA BRUJA <span class="brand-small">TOCACOJONES</span></div>
+      <button class="profile" id="profile" type="button" aria-label="Perfil de Sonia" aria-haspopup="dialog" aria-expanded="false" hidden>
+        <span class="profile-name">sonia</span>
+        <img src="assets/images/ProfilePhoto.jpg" alt="" width="32" height="32">
+        <span class="profile-hold" aria-hidden="true"></span>
+      </button>
+    </header>
+
+    <main class="scene" id="scene" aria-live="polite"></main>
+
+    <dialog class="jump-dialog" id="jump-dialog" aria-labelledby="jump-title">
+      <div class="jump-header">
+        <div><span class="eyebrow">ATAJO SECRETO</span><h2 id="jump-title">Elige una pista</h2></div>
+        <button class="icon-button" id="close-jump" type="button" aria-label="Cerrar">×</button>
+      </div>
+      <p>Si la bruja te ha cerrado la puerta, entra por la ventana.</p>
+      <div class="jump-list" id="jump-list"></div>
+    </dialog>
+  </div>
+</body>
+</html>
