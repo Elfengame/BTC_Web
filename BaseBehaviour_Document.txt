@@ -1,0 +1,31 @@
+Estoy trabajando en una web estática para el cumpleaños de mi pareja. El proyecto está en D:\GitHub\BTC_Web\BTC_Web (el repositorio Git está en D:\GitHub\BTC_Web). Antes de modificar nada, revisa index.html, css/style.css, js/app.js y LEEME.txt: la web ya funciona y quiero continuar a partir de lo existente.
+
+CONCEPTO
+La protagonista es «LA BRUJA TOCACOJONES»: una bruja vieja de cuento, graciosa y gamberra, que le da pistas a Sonia y se burla cariñosamente de su novio. La experiencia está diseñada ante todo para móvil. En PC se muestra dentro de un marco con tamaño de móvil. El aspecto usa morados oscuros, lilas y letras doradas, con partículas sutiles, fondos en movimiento y transiciones suaves. La bruja flota y sale volando en escoba entre pantallas.
+
+RECORRIDO
+1. Pantalla de acceso: pide nombre y dos apellidos, y una contraseña. Solo permite entrar si el nombre es «Sonia Lara García», aceptando mayúsculas, minúsculas y «Garcia» sin tilde. La contraseña puede ser cualquier cosa. El error de nombre dice: «Uy, querida… ¿Qué sucede? ¿Ya no te acuerdas de tu nombre? Que nivel...».
+2. Aparece el perfil discreto «sonia» con su foto real (assets/images/ProfilePhoto.jpg).
+3. Aparece la bruja con «Mensaje 1» y se reproduce audio 1. Al terminar, la bruja sale volando y aparece la pista 1. Si el archivo de audio aún no existe, espera unos segundos y avanza automáticamente. Si el móvil bloquea la reproducción automática, aparece «Escuchar mensaje».
+4. Cada una de las cinco pistas sigue este ciclo: acertijo → respuesta correcta → «La bruja te reta» con una tarea e imagen o vídeo → ubicación del regalo → botón «Regalo encontrado» → siguiente mensaje de la bruja.
+5. Después del quinto regalo aparece «Una última cosita», se reproduce audio 6 y queda la pantalla final permanente: «¡Felices 29 querida! ¡BESITOS ENVENENADOS!» con un corazón lila. «Volver al inicio» reinicia el recorrido con transición.
+
+PISTAS Y TAREAS YA CONFIGURADAS
+- Pista 1: respuesta «algodón» (también acepta «algodón de azúcar» y «algodón dulce»). Muestra assets/video/Squat_Time.mp4. Tarea: «¡Haz 5 sentadillas!». Regalo: «el chaise longue del sofá».
+- Pista 2: respuesta «fotografía» (también «foto»). Muestra assets/images/churros-pista-2.jpg. Tarea: «¡Ve a comprar unos churros!». Regalo: «La Zona de Vinilos».
+- Pista 3: respuesta «palabra». Muestra assets/images/foto-suka-pista-3.jpg. Tarea: «Tienes que hacerte esta foto con la Suka». El botón abre una pantalla de cámara. Hay que pulsar «Hacer foto» y luego «Enviar»; solo entonces se descarga la foto en el dispositivo y se muestra la ubicación «Arriba de la máquina de Aerotermia». En PC se crea una foto de prueba para poder recorrer el flujo. En móvil se intenta usar la cámara frontal y hay una alternativa con la cámara nativa. La foto no se envía a ningún servidor.
+- Pista 4: respuesta «comida» (también «alimento» y «alimentos»). Tarea e imagen todavía provisionales. Regalo: «El barullo de bolsas de la habitación desastre».
+- Pista 5: respuesta «teatro». Tarea e imagen todavía provisionales. Regalo: «Debajo del teclado de tu novio.».
+
+Los textos completos de los cinco acertijos están en el array PISTAS, al comienzo de js/app.js. Las respuestas toleran mayúsculas, tildes, puntuación, espacios y algunos artículos. Como recurso de emergencia, escribir «1994» en cualquier campo de respuesta autocompleta la respuesta correcta.
+
+ATAJO SECRETO
+Un toque normal en el perfil de Sonia no hace nada. Mantenerlo pulsado durante 5 segundos abre un menú para saltar al comienzo de cualquiera de las cinco pistas. Esto permite recuperar el recorrido si se cierra la web. Actualmente no hay guardado automático de progreso.
+
+AUDIO Y ARCHIVOS
+Los audios aún no están añadidos. Deben colocarse en assets/audio/ como «audio 1.mp3» hasta «audio 6.mp3»; el código también admite «audio-1.mp3» y formatos m4a, wav u ogg. Cuando un audio existe, hay que esperar a que termine antes de avanzar. La ilustración de la bruja está en assets/images/bruja-provisional.png. La imagen de las tareas 4 y 5 está en assets/images/regalo-provisional.png. Ambas pueden reemplazarse más adelante.
+
+PUBLICACIÓN
+Es HTML, CSS y JavaScript sin backend ni Node.js. index.html está en la raíz de la carpeta que se debe publicar; la carpeta completa puede subirse a un hosting estático como Netlify. Para que funcione la cámara del móvil, la web publicada debe abrirse con HTTPS. El acceso con el nombre de Sonia es parte del juego, no una medida de seguridad real.
+
+Cuando te pida cambios, conserva el recorrido, el diseño para móvil y las funciones ya implementadas. Revisa el código actual antes de asumir que falta alguna característica.
