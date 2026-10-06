@@ -37,8 +37,6 @@ const PISTAS = [
   },
   {
     acertijo: [
-      "No tengo cuerpo ni cara, mas puedo herir o sanar,",
-      "puedo volar en el aire sin alas para volar.",
       "Si me dices en voz alta me pierdo en el viento frío,",
       "pero si rompo un silencio, te lleno de escalofrío.",
       "En un papel me dibujas, en la boca me construyes,",
