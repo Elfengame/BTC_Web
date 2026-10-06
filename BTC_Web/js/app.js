@@ -239,7 +239,11 @@ function witchMarkup(index, finalMessage) {
         <img class="witch-image" src="assets/images/bruja-provisional.png" alt="Una bruja mayor y sonriente vuela sobre su escoba entre destellos dorados">
       </div>
       <p class="audio-status sr-only" id="audio-status" aria-live="polite">Preparando el mensaje mágico…</p>
-      <button class="secondary-button audio-button" id="play-audio" type="button" hidden>Escuchar mensaje</button>
+      <div class="witch-actions">
+        <button class="secondary-button" id="play-audio" type="button" hidden>Escuchar mensaje</button>
+        <button class="secondary-button" id="replay-audio" type="button" hidden>¿Me lo repites porfa?</button>
+        <button class="primary-button" id="message-received" type="button" hidden>Mensaje recibido <span aria-hidden="true">✦</span></button>
+      </div>
     </div>`;
 }
 
@@ -254,19 +258,38 @@ function startWitch(index, finalMessage = false) {
   const run = audioRun;
   const statusText = () => document.getElementById("audio-status");
   const playButton = () => document.getElementById("play-audio");
-  let finished = false;
+  const replayButton = () => document.getElementById("replay-audio");
+  const receivedButton = () => document.getElementById("message-received");
+  let ready = false;
+  let transitioning = false;
   let candidateIndex = 0;
   let activeAttempt = 0;
   const candidates = audioCandidates(finalMessage ? 6 : index + 1);
 
-  const finish = () => {
-    if (finished || run !== audioRun) return;
-    finished = true;
+  const showReady = hasAudio => {
+    if (transitioning || run !== audioRun) return;
+    ready = true;
+    clearTimeout(fallbackTimer);
+    const status = statusText();
+    if (status) status.textContent = hasAudio ? "Mensaje terminado. Puedes escucharlo otra vez o continuar." : "Mensaje preparado. Pulsa Mensaje recibido para continuar.";
+    const play = playButton();
+    if (play) play.hidden = true;
+    const replay = replayButton();
+    if (replay) replay.hidden = !hasAudio;
+    const received = receivedButton();
+    if (received) received.hidden = false;
+  };
+
+  const continueToNext = () => {
+    if (!ready || transitioning || run !== audioRun) return;
+    transitioning = true;
     clearTimeout(fallbackTimer);
     const aura = document.getElementById("witch-aura");
     if (aura) aura.classList.add("fly-away");
     const status = statusText();
     if (status) status.textContent = "¡Allá voy!";
+    const actions = document.querySelector(".witch-actions");
+    if (actions) actions.hidden = true;
     setTimeout(() => {
       if (run !== audioRun) return;
       clearAudio();
@@ -275,37 +298,44 @@ function startWitch(index, finalMessage = false) {
   };
 
   const noAudio = () => {
-    if (run !== audioRun || finished) return;
+    if (run !== audioRun || transitioning) return;
     const status = statusText();
     if (status) status.textContent = "La bruja está preparando su voz…";
-    fallbackTimer = setTimeout(finish, AUDIO_FALLBACK_MS);
+    fallbackTimer = setTimeout(() => showReady(false), AUDIO_FALLBACK_MS);
   };
 
   const tryCandidate = () => {
-    if (run !== audioRun || finished) return;
+    if (run !== audioRun || transitioning) return;
     if (candidateIndex >= candidates.length) { noAudio(); return; }
     if (audio) audio.pause();
     audio = new Audio(candidates[candidateIndex++]);
     const attempt = ++activeAttempt;
     audio.preload = "auto";
-    audio.addEventListener("ended", finish, { once: true });
+    audio.addEventListener("ended", () => {
+      if (attempt === activeAttempt) showReady(true);
+    });
     const fail = () => {
-      if (attempt !== activeAttempt || run !== audioRun || finished) return;
+      if (attempt !== activeAttempt || run !== audioRun || transitioning) return;
       activeAttempt++;
       tryCandidate();
     };
     audio.addEventListener("error", fail, { once: true });
     audio.addEventListener("playing", () => {
       if (attempt !== activeAttempt) return;
+      ready = false;
       const status = statusText();
       if (status) status.textContent = "Escucha bien, querida…";
       const button = playButton();
       if (button) button.hidden = true;
+      const replay = replayButton();
+      if (replay) replay.hidden = true;
+      const received = receivedButton();
+      if (received) received.hidden = true;
     });
     const promise = audio.play();
     if (promise && typeof promise.catch === "function") {
       promise.catch(error => {
-        if (run !== audioRun || finished) return;
+        if (run !== audioRun || transitioning) return;
         if (error.name === "NotAllowedError") {
           const status = statusText();
           if (status) status.textContent = "Toca para escuchar a la bruja.";
@@ -319,6 +349,7 @@ function startWitch(index, finalMessage = false) {
   setScene("witch", witchMarkup(index, finalMessage), () => {
     document.getElementById("play-audio").addEventListener("click", () => {
       if (!audio) { tryCandidate(); return; }
+      if (audio.ended) audio.currentTime = 0;
       audio.play().catch(error => {
         if (error.name === "NotAllowedError") {
           const status = statusText();
@@ -326,6 +357,15 @@ function startWitch(index, finalMessage = false) {
         } else tryCandidate();
       });
     });
+    document.getElementById("replay-audio").addEventListener("click", () => {
+      if (!audio || !ready) return;
+      ready = false;
+      replayButton().hidden = true;
+      receivedButton().hidden = true;
+      audio.currentTime = 0;
+      audio.play().catch(() => showReady(true));
+    });
+    document.getElementById("message-received").addEventListener("click", continueToNext);
     tryCandidate();
   });
 }
