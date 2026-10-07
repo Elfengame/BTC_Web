@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 480" role="img" aria-label="Imagen provisional de una calle con un arco">
+  <defs><linearGradient id="sky" x2="0" y2="1"><stop stop-color="#f6bc7d"/><stop offset="1" stop-color="#ecd0aa"/></linearGradient><linearGradient id="wall" x2="1" y2="1"><stop stop-color="#c99b83"/><stop offset="1" stop-color="#9a6c72"/></linearGradient></defs>
+  <rect width="640" height="480" fill="url(#sky)"/><path d="M0 350 308 291 640 350V480H0Z" fill="#ad8990"/><path d="M0 0h198v365L0 401Z" fill="url(#wall)"/><path d="M455 0h185v405l-185-40Z" fill="#d7b297"/>
+  <path d="M169 0h320v285H169Z" fill="#a97977"/><path d="M217 283V181a112 112 0 0 1 224 0v102Z" fill="#392747"/><path d="M245 284v-96a84 84 0 0 1 168 0v96Z" fill="#d4b1a0"/><path d="M265 283v-85a65 65 0 0 1 130 0v85Z" fill="#745d73"/>
+  <path d="M86 78h68v88H86Zm422 21h74v90h-74Z" fill="#382e52"/><path d="M86 119h68m-34-41v88m388-22h74m-37-45v90" stroke="#e9c08f" stroke-width="8"/><path d="M271 480 329 285 390 480" fill="#c29d9a" opacity=".75"/>
+  <rect x="19" y="18" width="205" height="34" rx="17" fill="#24132f" opacity=".78"/><text x="35" y="41" fill="#fff0ad" font-family="Arial,sans-serif" font-size="17" font-weight="bold" letter-spacing="2">FOTO PROVISIONAL 01</text>
+</svg>

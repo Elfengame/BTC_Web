@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 480" role="img" aria-label="Imagen provisional de un parque con una fuente">
+  <defs><linearGradient id="sky" x2="0" y2="1"><stop stop-color="#9f8fc1"/><stop offset="1" stop-color="#f3c38e"/></linearGradient><linearGradient id="water" x2="0" y2="1"><stop stop-color="#b8d7d4"/><stop offset="1" stop-color="#5b8593"/></linearGradient></defs>
+  <rect width="640" height="480" fill="url(#sky)"/><path d="M0 295q130-56 270 0t370-8v193H0Z" fill="#719178"/><path d="M0 359q220-55 640-7v128H0Z" fill="#a0aa80"/>
+  <path d="M68 320V124m0 50q-91-31-37-94 27-78 89-41 80-2 78 66 57 62-42 92Z" fill="#51775d" stroke="#604a49" stroke-width="15" stroke-linejoin="round"/><path d="M571 317V91m0 68q-79-40-61-92 15-60 69-48 85-20 82 76 30 62-39 75Z" fill="#456b59" stroke="#614e53" stroke-width="13" stroke-linejoin="round"/>
+  <ellipse cx="322" cy="402" rx="205" ry="68" fill="#d1c2a2"/><ellipse cx="322" cy="394" rx="176" ry="50" fill="url(#water)"/><path d="M287 351h70l-9-34h-52Z" fill="#bba68e"/><path d="M311 317h24v-72h-24Z" fill="#e1d1b9"/><path d="M323 243q-35 32-55 65m55-65q39 25 62 61m-62-61v-47" fill="none" stroke="#d7f0e7" stroke-width="9" stroke-linecap="round"/>
+  <rect x="19" y="18" width="205" height="34" rx="17" fill="#24132f" opacity=".78"/><text x="35" y="41" fill="#fff0ad" font-family="Arial,sans-serif" font-size="17" font-weight="bold" letter-spacing="2">FOTO PROVISIONAL 02</text>
+</svg>

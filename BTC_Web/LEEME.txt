@@ -6,23 +6,24 @@ pero en ordenador se muestra dentro de un marco de tamaño móvil.
 RECORRIDO
 1. Entrar con «Sonia Lara García» en el campo del nombre (acepta mayúsculas,
    minúsculas y «Garcia» sin tilde). El campo contraseña acepta cualquier texto.
-2. Bruja + audio 1 → «Mensaje recibido» → Pista 1 (hay que acertar) → Tarea 1 → Ubicación 1.
+2. Bruja + audio 1 → Pista 1 (hay que acertar) → Tarea 1 → Ubicación 1.
 3. Tras «Regalo encontrado», repetir el ciclo hasta la pista 5.
-4. Tras el quinto regalo, bruja + audio 6 → «Mensaje recibido» → felicitación final.
+4. Tras el quinto regalo, bruja + audio 6 → felicitación final.
 5. «Volver al inicio» reinicia todo.
 
 Mantener pulsado el perfil «sonia» durante 5 segundos abre un menú oculto
 para saltar al inicio de cualquiera de las cinco pistas. Un toque normal no hace nada.
 
 ARCHIVOS DE AUDIO
-Pon tus clips en assets/audio/ con estos nombres:
-  audio 1.mp3  ...  audio 6.mp3
-También se aceptan «audio-1.mp3» ... «audio-6.mp3» y extensiones .m4a, .wav u .ogg.
-Si falta un audio, se muestra la bruja unos segundos y aparece «Mensaje recibido».
-Si el navegador móvil bloquea la reproducción automática, aparecerá el botón
-«Escuchar mensaje». Cuando un audio existe, se espera a que termine realmente.
-Después aparece «¿Me lo repites porfa?» para volver a escucharlo desde el
-principio. Solo «Mensaje recibido» hace avanzar a la pista o felicitación.
+Los seis mensajes de la bruja están en assets/audio/:
+  audio 1.mp3 ... audio 5.mp3 = mensajes anteriores a las pistas 1-5.
+  audio 6.mp3 = mensaje final anterior a la felicitación.
+Proceden de Message1.mp3 ... Message5.mp3 y FinanMessage.mp3, respectivamente.
+Se reproduce cada mensaje una sola vez y, cuando termina, la bruja sale volando
+y la página avanza automáticamente. No hay botones para repetir ni continuar.
+La reproducción se inicia desde el toque anterior. Si un navegador bloquea el
+audio, aparece la indicación «Toca a la bruja para escucharla» y se puede tocar
+la ilustración. Si falta o falla un archivo, se avanza después de unos segundos.
 
 CAMBIAR EL CONTENIDO
 En js/app.js, al principio del archivo, está la lista PISTAS con los cinco
@@ -34,13 +35,25 @@ assets/video/Squat_Time.mp4, pide cinco sentadillas y sitúa el regalo en el
 chaise longue del sofá. La segunda pide comprar churros y sitúa el regalo en
 «La Zona de Vinilos». La tercera pide recrear la foto con Suka y sitúa el
 regalo arriba de la máquina de Aerotermia. Las ubicaciones de los regalos 4 y 5
-ya están definidas; sus tareas e imágenes siguen provisionales.
+ya están definidas. La tarea 4 pide ejecutar todos los pasos de baile seguidos
+y sin equivocarse, junto a su novio. Muestra assets/video/dance-reto-4.mp4 en
+bucle y reproduce assets/audio/brujeria-reto-4.mp3 como música de fondo también
+en bucle. Si el móvil bloquea el sonido automático, aparece «Activar música».
+La música se pausa al salir del reto y se reanuda desde el mismo punto, en
+bucle, al aparecer la felicitación final. Si el móvil bloquea esa reanudación,
+aparece «Activar música» en la pantalla final. «Tarea completada» sigue disponible.
+La tarea 5
+pide encontrar cinco lugares alrededor de casa a partir de sus fotos. Cada foto
+se marca por separado y solo al completar las cinco aparece «Tarea completada».
+Las cinco imágenes de assets/images/foto-reto-5-1.svg hasta
+foto-reto-5-5.svg son provisionales y se pueden sustituir cambiando las rutas
+en la propiedad photoHunt de la pista 5, en js/app.js.
 Puedes reemplazar las ilustraciones provisionales de assets/images/ manteniendo
 sus nombres, o cambiar las rutas correspondientes en el HTML y en js/app.js.
 La foto del perfil facilitada está en assets/images/ProfilePhoto.jpg.
 
 FOTO DE LA TERCERA TAREA
-En móvil se solicita la cámara frontal. Si la vista en directo no funciona,
+En móvil se solicita la cámara trasera. Si la vista en directo no funciona,
 «Hacer foto» abre la cámara nativa del teléfono. Después de tomar la foto,
 «Enviar» descarga el archivo en el dispositivo y muestra la ubicación.
 No se sube la imagen a ningún servidor. En ordenador se usa una foto de prueba

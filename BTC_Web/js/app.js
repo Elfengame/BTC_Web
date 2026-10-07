@@ -61,7 +61,11 @@ const PISTAS = [
     ].join("\n"),
     respuesta: "COMIDA",
     alternativas: ["alimento", "alimentos"],
-    tarea: "Texto tarea", ubicacion: "El barullo de bolsas de la habitación desastre", imagen: "assets/images/regalo-provisional.png"
+    tarea: "Ejecutar junto a tu novio TODOS los pasos aprendidos en baile SEGUIDOS y sin equivocarse NI UNA SOLA VEZ",
+    ubicacion: "El barullo de bolsas de la habitación desastre",
+    video: "assets/video/dance-reto-4.mp4",
+    videoAlt: "Vídeo de los pasos de baile",
+    music: "assets/audio/brujeria-reto-4.mp3"
   },
   {
     acertijo: [
@@ -76,7 +80,9 @@ const PISTAS = [
     ].join("\n"),
     respuesta: "TEATRO",
     alternativas: [],
-    tarea: "Texto tarea", ubicacion: "Debajo del teclado de tu novio.", imagen: "assets/images/regalo-provisional.png"
+    tarea: "Encuentra la ubicación de estas fotos alrededor de tu casa",
+    ubicacion: "Debajo del teclado de tu novio.",
+    photoHunt: [1, 2, 3, 4, 5].map(number => `assets/images/foto-reto-5-${number}.svg`)
   }
 ];
 
@@ -98,6 +104,7 @@ let sceneTimer = null;
 let fallbackTimer = null;
 let holdTimer = null;
 let audio = null;
+let danceMusic = null;
 let audioRun = 0;
 let sceneRun = 0;
 let cameraStream = null;
@@ -154,6 +161,42 @@ function clearAudio() {
   }
 }
 
+function stopDanceMusic() {
+  if (danceMusic) danceMusic.pause();
+}
+
+function resetDanceMusic() {
+  if (!danceMusic) return;
+  danceMusic.pause();
+  danceMusic.removeAttribute("src");
+  danceMusic.load();
+  danceMusic = null;
+}
+
+function updateDanceMusicButton() {
+  const button = document.getElementById("dance-audio-button") || document.getElementById("final-music-button");
+  if (button) button.hidden = !danceMusic || !danceMusic.paused;
+}
+
+function playDanceMusic(path) {
+  if (!danceMusic) {
+    danceMusic = new Audio(path);
+    danceMusic.loop = true;
+    danceMusic.volume = 0.7;
+  }
+  const music = danceMusic;
+  music.play().then(() => {
+    if (danceMusic === music) updateDanceMusicButton();
+  }).catch(() => {
+    if (danceMusic === music) updateDanceMusicButton();
+  });
+}
+
+function startDanceMusic(path) {
+  resetDanceMusic();
+  playDanceMusic(path);
+}
+
 function releaseCamera() {
   cameraRun++;
   if (cameraStream) {
@@ -168,6 +211,7 @@ function releaseCamera() {
 
 function setScene(nextPhase, markup, afterRender) {
   clearTimeout(sceneTimer);
+  if (nextPhase !== "task" && nextPhase !== "final") stopDanceMusic();
   if (nextPhase !== "camera") releaseCamera();
   const run = ++sceneRun;
   scene.classList.add("leaving");
@@ -191,6 +235,7 @@ function esc(text) {
 
 function showLogin() {
   clearAudio();
+  resetDanceMusic();
   pistaActual = 0;
   profile.hidden = true;
   closeJumpDialog();
@@ -239,57 +284,26 @@ function witchMarkup(index, finalMessage) {
         <img class="witch-image" src="assets/images/bruja-provisional.png" alt="Una bruja mayor y sonriente vuela sobre su escoba entre destellos dorados">
       </div>
       <p class="audio-status sr-only" id="audio-status" aria-live="polite">Preparando el mensaje mágico…</p>
-      <div class="witch-actions">
-        <button class="secondary-button" id="play-audio" type="button" hidden>Escuchar mensaje</button>
-        <button class="secondary-button" id="replay-audio" type="button" hidden>¿Me lo repites porfa?</button>
-        <button class="primary-button" id="message-received" type="button" hidden>Mensaje recibido <span aria-hidden="true">✦</span></button>
-      </div>
     </div>`;
-}
-
-function audioCandidates(number) {
-  const names = [`audio ${number}`, `audio-${number}`];
-  return names.flatMap(name => ["mp3", "m4a", "wav", "ogg"].map(ext => `${AUDIO_BASE}${name}.${ext}`));
 }
 
 function startWitch(index, finalMessage = false) {
   clearAudio();
+  stopDanceMusic();
   pistaActual = index;
   const run = audioRun;
-  const statusText = () => document.getElementById("audio-status");
-  const playButton = () => document.getElementById("play-audio");
-  const replayButton = () => document.getElementById("replay-audio");
-  const receivedButton = () => document.getElementById("message-received");
-  let ready = false;
-  let transitioning = false;
-  let candidateIndex = 0;
-  let activeAttempt = 0;
-  const candidates = audioCandidates(finalMessage ? 6 : index + 1);
+  let finished = false;
+  let needsTap = false;
+  const number = finalMessage ? 6 : index + 1;
 
-  const showReady = hasAudio => {
-    if (transitioning || run !== audioRun) return;
-    ready = true;
-    clearTimeout(fallbackTimer);
-    const status = statusText();
-    if (status) status.textContent = hasAudio ? "Mensaje terminado. Puedes escucharlo otra vez o continuar." : "Mensaje preparado. Pulsa Mensaje recibido para continuar.";
-    const play = playButton();
-    if (play) play.hidden = true;
-    const replay = replayButton();
-    if (replay) replay.hidden = !hasAudio;
-    const received = receivedButton();
-    if (received) received.hidden = false;
-  };
-
-  const continueToNext = () => {
-    if (!ready || transitioning || run !== audioRun) return;
-    transitioning = true;
+  const finish = () => {
+    if (finished || run !== audioRun) return;
+    finished = true;
     clearTimeout(fallbackTimer);
     const aura = document.getElementById("witch-aura");
     if (aura) aura.classList.add("fly-away");
-    const status = statusText();
+    const status = document.getElementById("audio-status");
     if (status) status.textContent = "¡Allá voy!";
-    const actions = document.querySelector(".witch-actions");
-    if (actions) actions.hidden = true;
     setTimeout(() => {
       if (run !== audioRun) return;
       clearAudio();
@@ -298,75 +312,67 @@ function startWitch(index, finalMessage = false) {
   };
 
   const noAudio = () => {
-    if (run !== audioRun || transitioning) return;
-    const status = statusText();
-    if (status) status.textContent = "La bruja está preparando su voz…";
-    fallbackTimer = setTimeout(() => showReady(false), AUDIO_FALLBACK_MS);
+    if (run !== audioRun || finished || fallbackTimer) return;
+    needsTap = false;
+    const status = document.getElementById("audio-status");
+    if (status) status.classList.add("sr-only");
+    fallbackTimer = setTimeout(finish, AUDIO_FALLBACK_MS);
   };
 
-  const tryCandidate = () => {
-    if (run !== audioRun || transitioning) return;
-    if (candidateIndex >= candidates.length) { noAudio(); return; }
-    if (audio) audio.pause();
-    audio = new Audio(candidates[candidateIndex++]);
-    const attempt = ++activeAttempt;
-    audio.preload = "auto";
-    audio.addEventListener("ended", () => {
-      if (attempt === activeAttempt) showReady(true);
-    });
-    const fail = () => {
-      if (attempt !== activeAttempt || run !== audioRun || transitioning) return;
-      activeAttempt++;
-      tryCandidate();
-    };
-    audio.addEventListener("error", fail, { once: true });
-    audio.addEventListener("playing", () => {
-      if (attempt !== activeAttempt) return;
-      ready = false;
-      const status = statusText();
-      if (status) status.textContent = "Escucha bien, querida…";
-      const button = playButton();
-      if (button) button.hidden = true;
-      const replay = replayButton();
-      if (replay) replay.hidden = true;
-      const received = receivedButton();
-      if (received) received.hidden = true;
-    });
+  const promptForTap = () => {
+    const aura = document.getElementById("witch-aura");
+    const status = document.getElementById("audio-status");
+    if (aura) {
+      aura.tabIndex = 0;
+      aura.setAttribute("role", "button");
+      aura.setAttribute("aria-label", "Toca a la bruja para escuchar su mensaje");
+    }
+    if (status) {
+      status.textContent = "Toca a la bruja para escucharla";
+      status.classList.remove("sr-only");
+    }
+  };
+
+  const playMessage = () => {
+    if (run !== audioRun || finished) return;
     const promise = audio.play();
     if (promise && typeof promise.catch === "function") {
       promise.catch(error => {
-        if (run !== audioRun || transitioning) return;
+        if (run !== audioRun || finished) return;
         if (error.name === "NotAllowedError") {
-          const status = statusText();
-          if (status) status.textContent = "Toca para escuchar a la bruja.";
-          const button = playButton();
-          if (button) button.hidden = false;
-        } else fail();
+          needsTap = true;
+          promptForTap();
+        } else noAudio();
       });
     }
   };
 
+  audio = new Audio(`${AUDIO_BASE}audio ${number}.mp3`);
+  audio.preload = "auto";
+  audio.addEventListener("ended", finish, { once: true });
+  audio.addEventListener("error", noAudio, { once: true });
+
+  // Cada mensaje empieza dentro del toque anterior para permitir audio en móvil.
+  playMessage();
   setScene("witch", witchMarkup(index, finalMessage), () => {
-    document.getElementById("play-audio").addEventListener("click", () => {
-      if (!audio) { tryCandidate(); return; }
-      if (audio.ended) audio.currentTime = 0;
-      audio.play().catch(error => {
-        if (error.name === "NotAllowedError") {
-          const status = statusText();
-          if (status) status.textContent = "Toca de nuevo para escuchar el mensaje.";
-        } else tryCandidate();
-      });
+    const aura = document.getElementById("witch-aura");
+    const retry = () => {
+      if (!needsTap) return;
+      needsTap = false;
+      const status = document.getElementById("audio-status");
+      if (status) status.classList.add("sr-only");
+      aura.removeAttribute("role");
+      aura.removeAttribute("tabindex");
+      playMessage();
+    };
+    aura.addEventListener("click", retry);
+    aura.addEventListener("keydown", event => {
+      if (needsTap && (event.key === "Enter" || event.key === " ")) {
+        event.preventDefault();
+        retry();
+      }
     });
-    document.getElementById("replay-audio").addEventListener("click", () => {
-      if (!audio || !ready) return;
-      ready = false;
-      replayButton().hidden = true;
-      receivedButton().hidden = true;
-      audio.currentTime = 0;
-      audio.play().catch(() => showReady(true));
-    });
-    document.getElementById("message-received").addEventListener("click", continueToNext);
-    tryCandidate();
+    if (needsTap) promptForTap();
   });
 }
 
@@ -410,19 +416,76 @@ function showRiddle(index) {
 
 function showTask(index) {
   const clue = PISTAS[index];
+  if (clue.photoHunt) { showPhotoHunt(index); return; }
+  if (clue.music) startDanceMusic(clue.music); else stopDanceMusic();
   const media = clue.video
-    ? `<video class="task-video" src="${esc(clue.video)}" controls autoplay muted loop playsinline preload="metadata" aria-label="Vídeo de la tarea: cinco sentadillas">Tu navegador no puede reproducir este vídeo.</video>`
+    ? `<video class="task-video" src="${esc(clue.video)}" controls autoplay muted loop playsinline preload="metadata" aria-label="${esc(clue.videoAlt || "Vídeo de la tarea: cinco sentadillas")}">Tu navegador no puede reproducir este vídeo.</video>`
     : `<img src="${esc(clue.imagen)}" alt="${esc(clue.imagenAlt || "Regalo mágico provisional")}" class="gift-image">`;
   setScene("task", `
-    <div class="content task-content">
+    <div class="content task-content${clue.music ? " dance-task" : ""}">
       <div class="chapter"><span class="chapter-line"></span> LA BRUJA TE RETA <span class="chapter-line"></span></div>
       <h1>Tarea:</h1>
       <div class="gift-aura${clue.video ? " gift-aura-video" : ""}">${media}</div>
       <p class="task-copy${clue.cameraTask ? " task-copy-photo" : ""}"><em>${esc(clue.tarea)}</em></p>
+      ${clue.music ? '<button class="secondary-button dance-audio-button" id="dance-audio-button" type="button" hidden>Activar música ♪</button>' : ""}
       <button class="primary-button" id="task-done" type="button">${clue.cameraTask ? "Hacer foto" : "Tarea completada"} <span aria-hidden="true">✦</span></button>
-    </div>`, () => document.getElementById("task-done").addEventListener("click", () => {
+    </div>`, () => {
+    if (clue.music) {
+      updateDanceMusicButton();
+      document.getElementById("dance-audio-button").addEventListener("click", () => {
+        playDanceMusic(clue.music);
+      });
+    }
+    document.getElementById("task-done").addEventListener("click", () => {
       if (clue.cameraTask) showCamera(index); else showLocation(index);
-    }));
+    });
+  });
+}
+
+function showPhotoHunt(index) {
+  const clue = PISTAS[index];
+  const photos = clue.photoHunt;
+  const cards = photos.map((path, photoIndex) => `
+    <article class="hunt-card" data-photo-card="${photoIndex}">
+      <p class="hunt-card-label">FOTO ${String(photoIndex + 1).padStart(2, "0")}</p>
+      <div class="hunt-photo">
+        <img src="${esc(path)}" alt="Foto provisional ${photoIndex + 1} de la búsqueda" loading="lazy">
+        <span class="hunt-check" aria-hidden="true">✓</span>
+        <span class="hunt-sparkle hunt-sparkle-one" aria-hidden="true">✦</span>
+        <span class="hunt-sparkle hunt-sparkle-two" aria-hidden="true">✧</span>
+        <span class="hunt-sparkle hunt-sparkle-three" aria-hidden="true">✦</span>
+      </div>
+      <button class="hunt-mark" type="button" data-photo="${photoIndex}" aria-pressed="false" aria-label="Marcar foto ${photoIndex + 1} como encontrada">Marcar encontrada</button>
+    </article>`).join("");
+
+  setScene("hunt", `
+    <div class="content hunt-content">
+      <div class="chapter"><span class="chapter-line"></span> LA BRUJA TE RETA <span class="chapter-line"></span></div>
+      <h1>Tarea:</h1>
+      <p class="hunt-intro"><em>${esc(clue.tarea)}</em></p>
+      <p class="hunt-progress" id="hunt-progress" role="status" aria-live="polite">0 de ${photos.length} fotos encontradas</p>
+      <div class="hunt-list" id="hunt-list">${cards}</div>
+      <button class="primary-button hunt-done" id="hunt-done" type="button" hidden>Tarea completada <span aria-hidden="true">✦</span></button>
+    </div>`, () => {
+    const marked = new Set();
+    const done = document.getElementById("hunt-done");
+    document.getElementById("hunt-list").addEventListener("click", event => {
+      const button = event.target.closest("button[data-photo]");
+      if (!button) return;
+      const photoIndex = Number(button.dataset.photo);
+      const found = !marked.has(photoIndex);
+      if (found) marked.add(photoIndex); else marked.delete(photoIndex);
+      button.closest(".hunt-card").classList.toggle("is-complete", found);
+      button.setAttribute("aria-pressed", String(found));
+      button.setAttribute("aria-label", `${found ? "Desmarcar" : "Marcar"} foto ${photoIndex + 1} como encontrada`);
+      button.textContent = found ? "✓ Encontrada" : "Marcar encontrada";
+      document.getElementById("hunt-progress").textContent = `${marked.size} de ${photos.length} fotos encontradas`;
+      done.hidden = marked.size !== photos.length;
+    });
+    done.addEventListener("click", () => {
+      if (marked.size === photos.length) showLocation(index);
+    });
+  });
 }
 
 function isMobileCameraDevice() {
@@ -439,9 +502,9 @@ function showCamera(index) {
   let streamRequest = null;
   let cameraFallback = mobile && !navigator.mediaDevices?.getUserMedia;
 
-  // La petición nace del toque en «Tarea completada», también en Safari móvil.
+  // La petición nace del toque en «Hacer foto», también en Safari móvil.
   if (mobile && navigator.mediaDevices?.getUserMedia) {
-    streamRequest = navigator.mediaDevices.getUserMedia({ audio: false, video: { facingMode: { ideal: "user" } } });
+    streamRequest = navigator.mediaDevices.getUserMedia({ audio: false, video: { facingMode: { exact: "environment" } } });
   }
 
   const status = message => {
@@ -470,7 +533,7 @@ function showCamera(index) {
       <h1>La foto con Suka</h1>
       <div class="camera-frame" role="group" aria-label="Vista de la cámara">
         <img id="camera-poster" src="${esc(clue.imagen)}" alt="Referencia para la foto con Suka">
-        <video id="camera-live" autoplay muted playsinline hidden aria-label="Cámara frontal en directo"></video>
+        <video id="camera-live" autoplay muted playsinline hidden aria-label="Cámara trasera en directo"></video>
         <canvas id="camera-snapshot" hidden aria-label="Foto tomada"></canvas>
         <span class="camera-corner camera-corner-one" aria-hidden="true"></span>
         <span class="camera-corner camera-corner-two" aria-hidden="true"></span>
@@ -480,7 +543,7 @@ function showCamera(index) {
         <button class="secondary-button" id="camera-shoot" type="button">Hacer foto</button>
         <button class="primary-button" id="camera-send" type="button" disabled>Enviar</button>
       </div>
-      <input class="sr-only" id="camera-file" type="file" accept="image/*" capture="user" tabindex="-1" aria-label="Hacer foto con la cámara del móvil">
+      <input class="sr-only" id="camera-file" type="file" accept="image/*" capture="environment" tabindex="-1" aria-label="Hacer foto con la cámara trasera del móvil">
     </div>`, () => {
     const video = document.getElementById("camera-live");
     const poster = document.getElementById("camera-poster");
@@ -536,8 +599,6 @@ function showCamera(index) {
       if (!ctx) { status("No se pudo preparar la foto. Inténtalo otra vez."); return; }
       if (mobile) {
         const edge = Math.min(video.videoWidth, video.videoHeight);
-        ctx.translate(canvas.width, 0);
-        ctx.scale(-1, 1);
         ctx.drawImage(video, (video.videoWidth - edge) / 2, (video.videoHeight - edge) / 2,
           edge, edge, 0, 0, canvas.width, canvas.height);
       } else {
@@ -634,13 +695,19 @@ function showLocation(index) {
 }
 
 function showFinal() {
+  playDanceMusic(PISTAS[3].music);
   setScene("final", `
     <div class="content final-content">
       <span class="final-spark" aria-hidden="true">✦</span>
       <h1>¡Felices 29 querida! ¡BESITOS ENVENENADOS!</h1>
       <div class="final-heart" role="img" aria-label="Corazón lila">💜</div>
+      <button class="secondary-button final-music-button" id="final-music-button" type="button" hidden>Activar música ♪</button>
       <button class="restart-button" id="restart" type="button">Volver al inicio</button>
-    </div>`, () => document.getElementById("restart").addEventListener("click", showLogin));
+    </div>`, () => {
+    updateDanceMusicButton();
+    document.getElementById("final-music-button").addEventListener("click", () => playDanceMusic(PISTAS[3].music));
+    document.getElementById("restart").addEventListener("click", showLogin);
+  });
 }
 
 function openJumpDialog() {

@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 480" role="img" aria-label="Imagen provisional de un banco junto a una farola">
+  <defs><linearGradient id="sky" x2="0" y2="1"><stop stop-color="#71658e"/><stop offset="1" stop-color="#e0a17f"/></linearGradient><radialGradient id="glow"><stop stop-color="#ffe8a4" stop-opacity=".75"/><stop offset="1" stop-color="#ffe8a4" stop-opacity="0"/></radialGradient></defs>
+  <rect width="640" height="480" fill="url(#sky)"/><path d="M0 290q120-34 235 8t405-20v202H0Z" fill="#536b61"/><path d="M0 363q280-46 640 12v105H0Z" fill="#a58d91"/><circle cx="473" cy="148" r="107" fill="url(#glow)"/>
+  <path d="M472 347V106m-23 0h46l-8 36h-30Z" fill="#f4d290" stroke="#3d3449" stroke-width="11" stroke-linecap="round" stroke-linejoin="round"/><path d="M453 112h38" stroke="#fff0bb" stroke-width="8"/><path d="M105 323h245m-231-35h219m-204-28h189m-201 0-22 30m238-30 22 30m-235 34-17 92m230-92 16 92" stroke="#57424d" stroke-width="15" stroke-linecap="round"/>
+  <path d="M17 350V151m0 46q-39-27-16-79 21-68 72-44 62-9 65 67 21 48-42 76Z" fill="#466350" stroke="#514450" stroke-width="10" stroke-linejoin="round"/><path d="M571 331V123m0 55q-52-37-36-83 15-66 63-57 71 1 67 75 24 56-39 75Z" fill="#43634e" stroke="#504554" stroke-width="10" stroke-linejoin="round"/>
+  <rect x="19" y="18" width="205" height="34" rx="17" fill="#24132f" opacity=".78"/><text x="35" y="41" fill="#fff0ad" font-family="Arial,sans-serif" font-size="17" font-weight="bold" letter-spacing="2">FOTO PROVISIONAL 05</text>
+</svg>

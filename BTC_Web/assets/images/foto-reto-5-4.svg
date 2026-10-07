@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 480" role="img" aria-label="Imagen provisional de una esquina con un edificio amarillo">
+  <defs><linearGradient id="sky" x2="0" y2="1"><stop stop-color="#8d86b6"/><stop offset="1" stop-color="#f4d6af"/></linearGradient><linearGradient id="front" x2="1" y2="1"><stop stop-color="#eac582"/><stop offset="1" stop-color="#b88b78"/></linearGradient></defs>
+  <rect width="640" height="480" fill="url(#sky)"/><path d="M0 364 640 329v151H0Z" fill="#8d7b8c"/><path d="M95 107 371 50l174 70v273l-174-33-276 44Z" fill="url(#front)"/><path d="M371 50v310l174 33V120Z" fill="#a87c83"/><path d="M95 107 371 50l174 70-174-30Z" fill="#755473"/>
+  <path d="M144 145h69v77h-69Zm111-23h69v82h-69Zm-111 146h69v88h-69Zm111-23h69v96h-69Zm162-104 77 17v73l-77-14Zm0 124 77 14v75l-77-13Z" fill="#47394f" stroke="#f0d7a8" stroke-width="8"/><path d="M143 184h70m77-61v81m-146 108h69m77-65v94m127-144 77 13m-77 97 77 14" stroke="#d6b78c" stroke-width="5"/>
+  <path d="M44 383 371 341l224 38" fill="none" stroke="#e6d5b1" stroke-width="7"/><path d="M75 444 372 398l242 46" fill="none" stroke="#c0aab0" stroke-width="5"/>
+  <rect x="19" y="18" width="205" height="34" rx="17" fill="#24132f" opacity=".78"/><text x="35" y="41" fill="#fff0ad" font-family="Arial,sans-serif" font-size="17" font-weight="bold" letter-spacing="2">FOTO PROVISIONAL 04</text>
+</svg>

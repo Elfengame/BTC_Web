@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 480" role="img" aria-label="Imagen provisional de unas escaleras entre edificios">
+  <defs><linearGradient id="sky" x2="0" y2="1"><stop stop-color="#8276aa"/><stop offset="1" stop-color="#f2bea2"/></linearGradient><linearGradient id="stairs" x2="0" y2="1"><stop stop-color="#a994a2"/><stop offset="1" stop-color="#d4aea2"/></linearGradient></defs>
+  <rect width="640" height="480" fill="url(#sky)"/><path d="M0 42 224 0v410L0 480Z" fill="#be8f8d"/><path d="M440 0 640 44v436l-200-76Z" fill="#d9a88b"/><path d="M224 242h216v145H224Z" fill="#665373"/>
+  <path d="M196 480 228 425h206l34 55Zm31-55 20-43h167l20 43Zm20-43 15-35h139l13 35Zm15-35 11-28h119l9 28Zm11-28 9-25h101l9 25Zm9-25 8-22h85l8 22Zm8-22 7-19h71l7 19Z" fill="url(#stairs)" stroke="#836f86" stroke-width="4"/>
+  <path d="M75 80h90v135H75Zm395 16h91v134h-91Z" fill="#453550"/><path d="M75 147h90m-45-67v135m350-50h91m-45-69v134" stroke="#e9c198" stroke-width="8"/><path d="m194 252 24-39m228 40-24-40" stroke="#f7deaa" stroke-width="7" stroke-linecap="round"/>
+  <rect x="19" y="18" width="205" height="34" rx="17" fill="#24132f" opacity=".78"/><text x="35" y="41" fill="#fff0ad" font-family="Arial,sans-serif" font-size="17" font-weight="bold" letter-spacing="2">FOTO PROVISIONAL 03</text>
+</svg>
