@@ -248,8 +248,8 @@ input:focus { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(245,215,106,
 .hunt-card { padding: 11px 11px 13px; border: 1px solid rgba(248,222,140,.24); border-radius: 18px; background: linear-gradient(155deg, rgba(77,30,95,.58), rgba(22,7,34,.8)); box-shadow: 0 12px 26px rgba(5,0,12,.2); transition: border-color .3s, box-shadow .3s; }
 .hunt-card.is-complete { border-color: rgba(112,229,165,.7); box-shadow: 0 0 22px rgba(95,221,150,.14), 0 12px 26px rgba(5,0,12,.2); }
 .hunt-card-label { color: var(--gold); text-align: left; letter-spacing: .22em; font-size: 10px; font-weight: 700; margin: 0 0 9px 3px; }
-.hunt-photo { position: relative; overflow: hidden; border-radius: 11px; aspect-ratio: 4 / 3; background: #271137; }
-.hunt-photo img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.hunt-photo { position: relative; overflow: hidden; border-radius: 11px; aspect-ratio: 1 / 1; background: #271137; }
+.hunt-photo img { display: block; width: 100%; height: 100%; object-fit: contain; }
 .hunt-photo::after { content: ""; position: absolute; inset: 0; background: rgba(33,115,71,.17); opacity: 0; pointer-events: none; transition: opacity .35s; }
 .hunt-card.is-complete .hunt-photo::after { opacity: 1; }
 .hunt-check { position: absolute; z-index: 2; top: 50%; left: 50%; width: 68px; height: 68px; display: grid; place-items: center; border: 3px solid #d6ffe5; border-radius: 50%; color: white; background: #29935c; box-shadow: 0 0 0 8px rgba(58,207,126,.18), 0 0 28px rgba(76,225,143,.65); font-size: 40px; font-weight: 700; line-height: 1; opacity: 0; transform: translate(-50%, -50%) scale(.4) rotate(-20deg); transition: opacity .35s, transform .5s cubic-bezier(.15,1.4,.4,1); }

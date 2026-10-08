@@ -82,7 +82,7 @@ const PISTAS = [
     alternativas: [],
     tarea: "Encuentra la ubicación de estas fotos alrededor de tu casa",
     ubicacion: "Debajo del teclado de tu novio.",
-    photoHunt: [1, 2, 3, 4, 5].map(number => `assets/images/foto-reto-5-${number}.svg`)
+    photoHunt: [1, 2, 3, 4, 5].map(number => `assets/images/foto-reto-5-${number}.jpg`)
   }
 ];
 
@@ -449,7 +449,7 @@ function showPhotoHunt(index) {
     <article class="hunt-card" data-photo-card="${photoIndex}">
       <p class="hunt-card-label">FOTO ${String(photoIndex + 1).padStart(2, "0")}</p>
       <div class="hunt-photo">
-        <img src="${esc(path)}" alt="Foto provisional ${photoIndex + 1} de la búsqueda" loading="lazy">
+        <img src="${esc(path)}" alt="Foto ${photoIndex + 1} de la búsqueda" loading="lazy">
         <span class="hunt-check" aria-hidden="true">✓</span>
         <span class="hunt-sparkle hunt-sparkle-one" aria-hidden="true">✦</span>
         <span class="hunt-sparkle hunt-sparkle-two" aria-hidden="true">✧</span>

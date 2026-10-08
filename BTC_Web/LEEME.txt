@@ -45,9 +45,10 @@ aparece «Activar música» en la pantalla final. «Tarea completada» sigue dis
 La tarea 5
 pide encontrar cinco lugares alrededor de casa a partir de sus fotos. Cada foto
 se marca por separado y solo al completar las cinco aparece «Tarea completada».
-Las cinco imágenes de assets/images/foto-reto-5-1.svg hasta
-foto-reto-5-5.svg son provisionales y se pueden sustituir cambiando las rutas
-en la propiedad photoHunt de la pista 5, en js/app.js.
+Las cinco fotos reales están en assets/images/foto-reto-5-1.jpg hasta
+foto-reto-5-5.jpg, en el mismo orden en que aparecen de arriba abajo.
+Se pueden sustituir conservando estos nombres o cambiando las rutas en la
+propiedad photoHunt de la pista 5, en js/app.js.
 Puedes reemplazar las ilustraciones provisionales de assets/images/ manteniendo
 sus nombres, o cambiar las rutas correspondientes en el HTML y en js/app.js.
 La foto del perfil facilitada está en assets/images/ProfilePhoto.jpg.
