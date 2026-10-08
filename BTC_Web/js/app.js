@@ -276,6 +276,7 @@ function witchMarkup(index, finalMessage) {
   const number = finalMessage ? 6 : index + 1;
   return `
     <div class="content witch-content">
+      <p class="volume-reminder"><span aria-hidden="true">🔊</span> Sube el volumen</p>
       <p class="witch-label${finalMessage ? " witch-label-final" : ""}">${finalMessage ? "Una última cosita" : `Mensaje ${number}`}</p>
       <div class="witch-aura" id="witch-aura">
         <span class="orbit orbit-one" aria-hidden="true">✦</span>
@@ -283,6 +284,7 @@ function witchMarkup(index, finalMessage) {
         <span class="orbit orbit-three" aria-hidden="true">✦</span>
         <img class="witch-image" src="assets/images/bruja-provisional.png" alt="Una bruja mayor y sonriente vuela sobre su escoba entre destellos dorados">
       </div>
+      <button class="skip-audio" id="skip-audio" type="button">Saltar audio <span aria-hidden="true">›</span></button>
       <p class="audio-status sr-only" id="audio-status" aria-live="polite">Preparando el mensaje mágico…</p>
     </div>`;
 }
@@ -300,6 +302,8 @@ function startWitch(index, finalMessage = false) {
     if (finished || run !== audioRun) return;
     finished = true;
     clearTimeout(fallbackTimer);
+    const skipButton = document.getElementById("skip-audio");
+    if (skipButton) skipButton.disabled = true;
     const aura = document.getElementById("witch-aura");
     if (aura) aura.classList.add("fly-away");
     const status = document.getElementById("audio-status");
@@ -356,6 +360,10 @@ function startWitch(index, finalMessage = false) {
   playMessage();
   setScene("witch", witchMarkup(index, finalMessage), () => {
     const aura = document.getElementById("witch-aura");
+    document.getElementById("skip-audio").addEventListener("click", () => {
+      if (audio) audio.pause();
+      finish();
+    });
     const retry = () => {
       if (!needsTap) return;
       needsTap = false;
